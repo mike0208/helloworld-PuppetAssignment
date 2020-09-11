@@ -1,0 +1,56 @@
+
+
+Master Setup,
+
+1- Create AWS Ubuntu Instance [Master]
+2- create SSH connection to the instance 
+3- Perform the following commands
+
+	$ sudo apt-get update
+	$ wget https://apt.puppetlabs.com/puppet-release-bionic.deb
+	$ sudo dpkg -i puppet-release-bionic.deb
+	$ sudo apt-get update
+	$ apt policy puppet master	
+	$ sudo apt-get install puppet-master 
+	$ sudo vi /etc/default/puppet-master
+		#Add this Line
+		JAVA_ARGS="-Xms512m Xmx512m" 
+		# save the file  -> :wq
+	$ sudo systemctl restart puppet-master 
+	$ sudo ufw allow 8140/tcp 
+	$ sudo vi /etc/hosts 
+		# add the Puppet Master IP address along with the name “puppet”	
+	  172.*.*.* puppet
+		# save the file  -> :wq
+	$ sudo mkdir -p /etc/puppet/code/environments/production/manifests
+	$ sudo systemctl status puppet-master 
+
+Slave Setup	
+		
+1- Create AWS Ubuntu Instance [Slave]
+2- create SSH connection to the instance 
+3- Perform the following commands
+ 	
+	$ sudo apt-get update
+	$ wget https://apt.puppetlabs.com/puppet-release-bionic.deb
+	$ sudo dpkg -i puppet-release-bionic.deb
+	$ sudo apt-get update
+	$ apt policy puppet master
+	$ sudo apt-get install puppet
+	$ sudo vi /etc/hosts 
+		# add the Puppet Master IP address along with the name “puppet”	
+	  172.*.*.* puppet
+		# save the file  -> :wq
+ 	$ sudo systemctl start puppet 
+	$ sudo systemctl enable puppet
+
+follow the same setup for one more slave -> Slave2
+
+########ssh into master once both the slaves up and running
+
+-> Sign the certificates for bothe slaves
+	$ sudo puppet cert list 
+	$ sudo puppet cert sign --all 
+	
+
+###########	the Puppet cluster is ready to use! 
