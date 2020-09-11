@@ -1,0 +1,18 @@
+On Master perform these steps - 
+
+$ cd /etc/puppet/code/environments/production/manifests
+$ sudo vi site.pp 
+$ mkdir /etc/puppet/code/environments/production/modules/mike-module
+$ cd /etc/puppet/code/environments/production/modules/mike-module
+$ mkdir files
+$ mkdir manifests
+$ cd manifests
+$ vi init.pp
+# make changes and save the file
+$ cd /etc/puppet/code/environments/production/manifests
+$ vi site.pp
+# make changes and save the file
+
+On slave perform these steps -
+
+$ sudo puppet agent --test 
